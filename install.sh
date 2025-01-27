@@ -58,3 +58,45 @@ install_docker() {
     fi
     echo "Docker and Docker Compose installed."
 }
+
+
+#create user and check if the user exist 
+
+
+
+create_users() {
+    IFS=', ' read -r -a user_list <<< "$USERS"
+    for user in "${user_list[@]}"; do
+        if id "$user" &>/dev/null; then
+            echo "User $user already exists."
+        else
+            sudo useradd "$user"
+            echo "User $user created."
+        fi
+    done
+}
+
+
+
+
+#create groups 
+
+
+create_groups() {
+    IFS=', ' read -r -a group_list <<< "$GROUPS"
+    for group in "${group_list[@]}"; do
+        if getent group "$group" &>/dev/null; then
+            echo "Group $group already exists."
+        else
+            sudo groupadd "$group"
+            echo "Group $group created."
+        fi
+    done
+}
+
+
+
+
+
+
+
